@@ -1,17 +1,30 @@
-# cadetego
+# CadeteGO 🛵
+**Proyecto Final - Evaluación Integradora Unidad 4 (Desarrollo de Software)**
 
-A new Flutter project.
+CadeteGO es una aplicación móvil desarrollada como Producto Mínimo Viable (MVP) para optimizar la logística de entregas de comercios locales. Permite a los repartidores visualizar sus rutas, cambiar el estado de los pedidos y gestionar sus despachos sin depender de mensajería informal.
 
-## Getting Started
+## 📌 Avances - Hito 1 y 2 (04/11)
 
-This project is a starting point for a Flutter application.
+Durante esta etapa se establecieron las bases tecnológicas, la arquitectura de la interfaz y la conexión al backend remoto:
 
-A few resources to get you started if this is your first Flutter project:
+- ✅ **Elección Tecnológica y Entorno:** Configuración inicial del proyecto multiplataforma utilizando **Flutter (Dart)**.
+- ✅ **Arquitectura de Interfaz:** Modularización del código base implementando buenas prácticas (separación de la lógica y la UI en la carpeta `/screens`).
+- ✅ **Desarrollo UI (Primeras Pantallas):** 
+  - `LoginScreen` y `RegisterScreen` (con validación de formularios mediante `FormState`).
+  - `HomeScreen` (Dashboard simulado de pedidos).
+  - `DetalleScreen` (Vista profunda de la orden).
+  - `PerfilScreen` (Gestión de sesión).
+- ✅ **Integración de Backend y Base de Datos:**
+  - Configuración inicial de **Supabase** (PostgreSQL).
+  - Implementación del paquete `supabase_flutter`.
+  - Conexión exitosa del servicio de Autenticación (`auth.signUp` y `auth.signInWithPassword`), incluyendo el envío de correos de confirmación.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## 🛠️ Tecnologías utilizadas hasta el momento
+* **Frontend:** Flutter & Dart
+* **Backend as a Service:** Supabase
+* **Control de Versiones:** Git & GitHub
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🚀 Cómo ejecutar el proyecto
+1. Clonar el repositorio: `git clone https://github.com/Kelany29/CadeteGo.git`
+2. Instalar las dependencias: `flutter pub get`
+3. Ejecutar en emulador o Chrome: `flutter run`
