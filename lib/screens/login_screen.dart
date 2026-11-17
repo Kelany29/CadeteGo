@@ -20,18 +20,34 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => isLoading = true);
 
       try {
-       
-        await Supabase.instance.client.auth.signInWithPassword(
+        // 1. Validar credenciales
+        final response = await Supabase.instance.client.auth.signInWithPassword(
           email: email,
           password: password,
         );
 
-        
-        if (mounted) {
-          Navigator.pushReplacementNamed(context, '/home');
+        final userId = response.user?.id;
+
+        if (userId != null) {
+          // 2. Obtener el rol desde la tabla 'perfiles'
+          final perfil = await Supabase.instance.client
+              .from('perfiles')
+              .select('rol')
+              .eq('id', userId)
+              .single();
+
+          final rol = perfil['rol'] as String;
+
+          // 3. Redirección dinámica según el rol
+          if (mounted) {
+            if (rol == 'local') {
+              Navigator.pushReplacementNamed(context, '/home_local');
+            } else {
+              Navigator.pushReplacementNamed(context, '/home_cadete');
+            }
+          }
         }
       } on AuthException catch (e) {
-        
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(e.message), backgroundColor: Colors.red),
@@ -40,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error inesperado: $e'), backgroundColor: Colors.red),
+            SnackBar(content: Text('Error al iniciar sesión: $e'), backgroundColor: Colors.red),
           );
         }
       } finally {
@@ -52,47 +68,49 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.delivery_dining, size: 100, color: Theme.of(context).primaryColor),
-              const SizedBox(height: 20),
-              Text('CadeteGO', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor)),
-              const SizedBox(height: 40),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder(), prefixIcon: Icon(Icons.email)),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => value!.isEmpty ? 'Ingresá tu correo' : null,
-                onSaved: (value) => email = value!,
-              ),
-              const SizedBox(height: 15),
-              TextFormField(
-                obscureText: true, 
-                decoration: const InputDecoration(labelText: 'Contraseña', border: OutlineInputBorder(), prefixIcon: Icon(Icons.lock)),
-                validator: (value) => value!.isEmpty ? 'Ingresá tu contraseña' : null,
-                onSaved: (value) => password = value!,
-              ),
-              const SizedBox(height: 25),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: isLoading ? null : iniciarSesion,
-                  child: isLoading 
-                      ? const CircularProgressIndicator(color: Colors.white) 
-                      : const Text('Ingresar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Logo de CadeteGO
+                Image.asset('assets/logo.jpg', height: 180),
+              
+                const SizedBox(height: 40),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder(), prefixIcon: Icon(Icons.email)),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) => value!.isEmpty ? 'Ingresá tu correo' : null,
+                  onSaved: (value) => email = value!,
                 ),
-              ),
-              const SizedBox(height: 15),
-              TextButton(
-                onPressed: () => Navigator.pushNamed(context, '/register'),
-                child: Text('¿No tenés cuenta? Registrate acá', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16)),
-              )
-            ],
+                const SizedBox(height: 15),
+                TextFormField(
+                  obscureText: true, 
+                  decoration: const InputDecoration(labelText: 'Contraseña', border: OutlineInputBorder(), prefixIcon: Icon(Icons.lock)),
+                  validator: (value) => value!.isEmpty ? 'Ingresá tu contraseña' : null,
+                  onSaved: (value) => password = value!,
+                ),
+                const SizedBox(height: 25),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: isLoading ? null : iniciarSesion,
+                    child: isLoading 
+                        ? const CircularProgressIndicator(color: Colors.white) 
+                        : const Text('Ingresar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                TextButton(
+                  onPressed: () => Navigator.pushNamed(context, '/register'),
+                  child: Text('¿No tenés cuenta? Registrate acá', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16)),
+                )
+              ],
+            ),
           ),
         ),
       ),
