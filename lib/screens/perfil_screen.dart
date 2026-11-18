@@ -86,112 +86,113 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Mi Perfil')),
-      body: _cargando
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: Icon(
-                        rol == 'LOCAL' ? Icons.store : Icons.delivery_dining,
-                        size: 50,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Tarjeta de Reputación para el Cadete
-                  if (rol == 'CADETE')
-                    Card(
-                      color: Colors.amber[50],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(color: Colors.amber[300]!),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(14.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    const Icon(Icons.star, color: Colors.amber, size: 26),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      _cantidadCalificaciones > 0
-                                          ? _promedioEstrellas.toStringAsFixed(1)
-                                          : 'Nuevo',
-                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  _cantidadCalificaciones > 0
-                                      ? '$_cantidadCalificaciones reseña(s)'
-                                      : 'Sin reseñas aún',
-                                  style: const TextStyle(fontSize: 12, color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                            Container(height: 35, width: 1, color: Colors.amber[300]),
-                            Column(
-                              children: [
-                                Text(
-                                  '$_entregasCompletadas',
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green[800]),
-                                ),
-                                const Text(
-                                  'Entregas realizadas',
-                                  style: TextStyle(fontSize: 12, color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                          ],
+      body: SafeArea(
+        child: _cargando
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: CircleAvatar(
+                        radius: 45,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Icon(
+                          rol == 'LOCAL' ? Icons.store : Icons.delivery_dining,
+                          size: 50,
+                          color: Colors.white,
                         ),
                       ),
                     ),
+                    const SizedBox(height: 20),
 
-                  const SizedBox(height: 20),
-                  Text(
-                    'Nombre: ${_perfil?['nombre'] ?? 'Usuario'}',
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Text('Rol: $rol', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                  const SizedBox(height: 10),
-                  Text('Correo: $email', style: const TextStyle(fontSize: 16)),
-                  if (_perfil?['telefono'] != null) ...[
-                    const SizedBox(height: 10),
-                    Text('Teléfono: ${_perfil!['telefono']}', style: const TextStyle(fontSize: 16)),
-                  ],
-                  if (rol == 'LOCAL') ...[
-                    const SizedBox(height: 10),
-                    Text('Rubro: ${_perfil?['rubro'] ?? '-'}', style: const TextStyle(fontSize: 16)),
-                    const SizedBox(height: 10),
-                    Text('Dirección: ${_perfil?['direccion'] ?? '-'}', style: const TextStyle(fontSize: 16)),
-                  ],
-                  const Spacer(),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.logout),
-                      label: const Text('Cerrar Sesión', style: TextStyle(fontSize: 18)),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red[700]),
-                      onPressed: _cerrarSesion,
+                    if (rol == 'CADETE')
+                      Card(
+                        color: Colors.amber[50],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(color: Colors.amber[300]!),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(14.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.star, color: Colors.amber, size: 26),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        _cantidadCalificaciones > 0
+                                            ? _promedioEstrellas.toStringAsFixed(1)
+                                            : 'Nuevo',
+                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    _cantidadCalificaciones > 0
+                                        ? '$_cantidadCalificaciones reseña(s)'
+                                        : 'Sin reseñas aún',
+                                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                                  ),
+                                ],
+                              ),
+                              Container(height: 35, width: 1, color: Colors.amber[300]),
+                              Column(
+                                children: [
+                                  Text(
+                                    '$_entregasCompletadas',
+                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green[800]),
+                                  ),
+                                  const Text(
+                                    'Entregas realizadas',
+                                    style: TextStyle(fontSize: 12, color: Colors.black54),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    const SizedBox(height: 20),
+                    Text(
+                      'Nombre: ${_perfil?['nombre'] ?? 'Usuario'}',
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    Text('Rol: $rol', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                    const SizedBox(height: 10),
+                    Text('Correo: $email', style: const TextStyle(fontSize: 16)),
+                    if (_perfil?['telefono'] != null) ...[
+                      const SizedBox(height: 10),
+                      Text('Teléfono: ${_perfil!['telefono']}', style: const TextStyle(fontSize: 16)),
+                    ],
+                    if (rol == 'LOCAL') ...[
+                      const SizedBox(height: 10),
+                      Text('Rubro: ${_perfil?['rubro'] ?? '-'}', style: const TextStyle(fontSize: 16)),
+                      const SizedBox(height: 10),
+                      Text('Dirección: ${_perfil?['direccion'] ?? '-'}', style: const TextStyle(fontSize: 16)),
+                    ],
+                    const Spacer(),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.logout),
+                        label: const Text('Cerrar Sesión', style: TextStyle(fontSize: 18)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.red[700]),
+                        onPressed: _cerrarSesion,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }
